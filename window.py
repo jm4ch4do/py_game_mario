@@ -60,6 +60,16 @@ while True:
             _pyg.quit()
             _sys.exit()
 
+        # --- Mouse Actions
+        if event.type == _pyg.MOUSEMOTION:
+            print(event.pos)
+
+        if event.type == _pyg.MOUSEBUTTONDOWN:
+            print('mouse down')
+
+        if event.type == _pyg.MOUSEBUTTONUP:
+            print('mouse up')
+
 
     # -----INSERT FIXED SURFACES
     screen.blit(sky_surface, sky_pos)
@@ -80,7 +90,12 @@ while True:
 
     player_rect.left += 1
 
-    print(player_rect.colliderect(snail_rect))
+    if player_rect.colliderect(snail_rect):
+        print('collision')
+
+    mouse_pos = _pyg.mouse.get_pos()
+    if player_rect.collidepoint(mouse_pos):
+        print(_pyg.mouse.get_pressed())
 
     # ----- GAME LOOP END
     _pyg.display.update()
