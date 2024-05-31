@@ -1,0 +1,10 @@
+--- IN POWERSHELL
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned
+
+--- BACK IN TERMINAL
+python -m pip install --upgrade pip
+pip install virtualenv
+python -m venv myenv
+myenv\Scripts\activate
+deactivate

@@ -1,0 +1,5 @@
+Why use Pygame?
+1. Helps drawing images and play sounds
+2. Easier to check for player input 
+3. Additional features like collission detection, creating text and timers.
+4. Helps at learning coding and servers as starting point for bigger engines.
