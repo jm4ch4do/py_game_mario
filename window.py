@@ -17,34 +17,31 @@ icon = _pyg.image.load('img/icon.png')
 _pyg.display.set_icon(icon)
 
 
-
-
 # ----- CREATE FONTS
 test_font = _pyg.font.Font("img/font/Pixeltype.ttf", 50)
-text_surface = test_font.render("Let's play Raulito Run!", False, "Black")
 
 
 # ----- CREATE SURFACES
 sky_surface = _pyg.image.load('img/sky.png').convert()
 ground_surface = _pyg.image.load('img/ground.png').convert()
+
+text_surface = test_font.render("Let's play Raulito Run!", False, (64, 64, 64))
+score_surface = test_font.render("Score: 123", False, "#c0e8ec")
+
 snail_surface = _pyg.image.load('img/snail/snail1.png').convert_alpha()
 player_surface = _pyg.image.load('img/player/player_walk_1.png').convert_alpha()
-#test_surface = _pyg.Surface((100, 200))
-#test_surface.fill('Red')
 
 
 # ----- POSITIONS FOR FIXED ELEMENTS
 sky_pos = (0, 0)
 ground_pos = (0, GROUND_BOTTOM_Y)
-text_pos = (250, 50)
+text_pos = (250, 25)
+score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/5))
 
 
-# ----- POSITIONS INI FOR MOVING ELEMENTS
+# ----- INI POSITIONS FOR MOVING ELEMENTS
 snail_x, snail_y = 600, GROUND_BOTTOM_Y
 player_x, player_y = 80, GROUND_BOTTOM_Y
-
-
-# ----- RECTANGLES FOR MOVING ELEMENTS
 snail_rect = snail_surface.get_rect(midbottom = (snail_x, snail_y))
 player_rect = player_surface.get_rect(midbottom = (player_x, player_y))
 
@@ -60,21 +57,12 @@ while True:
             _pyg.quit()
             _sys.exit()
 
-        # --- Mouse Actions
-        if event.type == _pyg.MOUSEMOTION:
-            print(event.pos)
-
-        if event.type == _pyg.MOUSEBUTTONDOWN:
-            print('mouse down')
-
-        if event.type == _pyg.MOUSEBUTTONUP:
-            print('mouse up')
-
 
     # -----INSERT FIXED SURFACES
     screen.blit(sky_surface, sky_pos)
     screen.blit(ground_surface, ground_pos)
     screen.blit(text_surface, text_pos)
+    screen.blit(score_surface, score_rect)
 
 
     # -----INSERT MOVING SURFACES
@@ -83,6 +71,11 @@ while True:
     screen.blit(snail_surface, snail_rect)
     screen.blit(player_surface, player_rect)
 
+    _pyg.draw.rect(screen, 'Pink', score_rect, 6, 20)
+    _pyg.draw.line(screen, 'White', (0,0), (800, 400), 10)
+    _pyg.draw.line(screen, 'Gold', (0,0), _pyg.mouse.get_pos(), 10)
+    _pyg.draw.ellipse(screen, 'Brown', _pyg.Rect(50, 200, 100, 100))
+
 
     # -----MOVING ELEMENTS
     snail_rect.x -= 1
@@ -90,12 +83,6 @@ while True:
 
     player_rect.left += 1
 
-    if player_rect.colliderect(snail_rect):
-        print('collision')
-
-    mouse_pos = _pyg.mouse.get_pos()
-    if player_rect.collidepoint(mouse_pos):
-        print(_pyg.mouse.get_pressed())
 
     # ----- GAME LOOP END
     _pyg.display.update()
