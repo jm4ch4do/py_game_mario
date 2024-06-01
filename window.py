@@ -57,6 +57,14 @@ while True:
             _pyg.quit()
             _sys.exit()
 
+        # --- Key Press
+        if event.type == _pyg.KEYDOWN:
+            if event.key == _pyg.K_SPACE:
+                print('JUMP NOW')
+
+        if event.type == _pyg.KEYUP:
+            print('KEY UP')
+
 
     # -----INSERT FIXED SURFACES
     screen.blit(sky_surface, sky_pos)
@@ -66,23 +74,19 @@ while True:
 
 
     # -----INSERT MOVING SURFACES
-    # screen.blit(snail_surface, (snail_x, snail_y))
-    # screen.blit(player_surface, (player_x, player_y))
     screen.blit(snail_surface, snail_rect)
     screen.blit(player_surface, player_rect)
-
-    _pyg.draw.rect(screen, 'Pink', score_rect, 6, 20)
-    _pyg.draw.line(screen, 'White', (0,0), (800, 400), 10)
-    _pyg.draw.line(screen, 'Gold', (0,0), _pyg.mouse.get_pos(), 10)
-    _pyg.draw.ellipse(screen, 'Brown', _pyg.Rect(50, 200, 100, 100))
 
 
     # -----MOVING ELEMENTS
     snail_rect.x -= 1
     if snail_rect.right <= 0: snail_rect.left = SCREEN_X
 
-    player_rect.left += 1
 
+    # # -----CAPTURE KEYS
+    keys = _pyg.key.get_pressed()
+    if keys[_pyg.K_SPACE]:
+        print('still holding space')  
 
     # ----- GAME LOOP END
     _pyg.display.update()
