@@ -17,6 +17,9 @@ icon = _pyg.image.load('img/icon.png')
 _pyg.display.set_icon(icon)
 
 
+# ----- STATUS
+game_active = True
+
 # ----- CREATE FONTS
 test_font = _pyg.font.Font("img/font/Pixeltype.ttf", 50)
 
@@ -25,18 +28,22 @@ test_font = _pyg.font.Font("img/font/Pixeltype.ttf", 50)
 sky_surface = _pyg.image.load('img/sky.png').convert()
 ground_surface = _pyg.image.load('img/ground.png').convert()
 
-text_surface = test_font.render("Let's play Raulito Run!", False, (64, 64, 64))
+text_start_surface = test_font.render("Let's play Raulito Run!", False, (64, 64, 64))
+text_end_surface = test_font.render("Game over! Press Space to retry", False, (64, 64, 64))
 score_surface = test_font.render("Score: 123", False, "#c0e8ec")
 
 snail_surface = _pyg.image.load('img/snail/snail1.png').convert_alpha()
 player_surface = _pyg.image.load('img/player/player_walk_1.png').convert_alpha()
+player_hit_surface = _pyg.image.load('img/player/player_walk_1_hit.png').convert_alpha()
 
 
 # ----- POSITIONS FOR FIXED ELEMENTS
 sky_pos = (0, 0)
 ground_pos = (0, GROUND_BOTTOM_Y)
 text_pos = (250, 25)
-score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/5))
+text_start_rect = text_start_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/8))
+text_end_rect = text_end_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/8))
+score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/4))
 
 
 # ----- INI POSITIONS FOR VARIABLE ELEMENTS
@@ -60,44 +67,65 @@ while True:
             _pyg.quit()
             _sys.exit()
 
-        # --- Jump with space
+        # --- Keyboard Events
         if event.type == _pyg.KEYDOWN :
+            # - Jump and Restart with space
             if event.key == _pyg.K_SPACE:
-                if player_rect.bottom >= GROUND_BOTTOM_Y: player_gravity = -6
+                if game_active:
+                    if player_rect.bottom >= GROUND_BOTTOM_Y: player_gravity = -6
+                elif not game_active:
+                    game_active = True
+                    snail_rect.x = snail_x
+                    player_gravity = -1
+                    break
 
-        # --- Jump with mouse left clic on player
+
+        # --- Mouse Events
         if event.type == _pyg.MOUSEBUTTONDOWN and event.button == 1:
+            # - Jump with clic on player
             if player_rect.collidepoint(event.pos):
                 if player_rect.bottom >= GROUND_BOTTOM_Y: player_gravity = -6
         
-
-    # -----INSERT FIXED SURFACES
-    screen.blit(sky_surface, sky_pos)
-    screen.blit(ground_surface, ground_pos)
-    screen.blit(text_surface, text_pos)
-    screen.blit(score_surface, score_rect)
-
-
-    # -----INSERT MOVING SURFACES
-    screen.blit(snail_surface, snail_rect)
-    screen.blit(player_surface, player_rect)
+    if game_active:
+        # -----INSERT FIXED SURFACES
+        screen.blit(sky_surface, sky_pos)
+        screen.blit(ground_surface, ground_pos)
+        screen.blit(text_start_surface, text_start_rect)
+        screen.blit(score_surface, score_rect)
 
 
-    # -----MOVING ELEMENTS
-    # snail moving
-    snail_rect.x -= snail_speed
-    if snail_rect.right <= 0: snail_rect.left = SCREEN_X
-    
-    # player gravity effect
-    player_rect.y += player_gravity
-    if player_rect.bottom >= GROUND_BOTTOM_Y: 
-        player_rect.bottom = GROUND_BOTTOM_Y
-        player_gravity = 0
-    else:
-        player_gravity += gravity_increase 
-    
+        # -----INSERT MOVING SURFACES
+        screen.blit(snail_surface, snail_rect)
+        screen.blit(player_surface, player_rect)
+
+
+        # -----CONFIG MOVING ENEMIES
+        # snail moving
+        snail_rect.x -= snail_speed
+        if snail_rect.right <= 0: snail_rect.left = SCREEN_X
+        
+
+        # -----CONFIG PLAYER RESPONSE
+        # player gravity effect
+        player_rect.y += player_gravity
+        if player_rect.bottom >= GROUND_BOTTOM_Y: 
+            player_rect.bottom = GROUND_BOTTOM_Y
+            player_gravity = 0
+        else:
+            player_gravity += gravity_increase 
+
+        # player hits snail
+        if snail_rect.colliderect(player_rect): 
+            game_active = False
+
+    elif not game_active:
+        screen.blit(sky_surface, sky_pos)
+        screen.blit(ground_surface, ground_pos)
+        screen.blit(snail_surface, snail_rect)
+        screen.blit(player_hit_surface, player_rect)
+        screen.blit(text_end_surface, text_end_rect)
+        
 
     # ----- GAME LOOP END
     _pyg.display.update()
     clock.tick(60)
-
