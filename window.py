@@ -39,11 +39,12 @@ text_pos = (250, 25)
 score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/5))
 
 
-# ----- INI POSITIONS FOR MOVING ELEMENTS
+# ----- INI POSITIONS FOR VARIABLE ELEMENTS
 snail_x, snail_y = 600, GROUND_BOTTOM_Y
 player_x, player_y = 80, GROUND_BOTTOM_Y
 snail_rect = snail_surface.get_rect(midbottom = (snail_x, snail_y))
 player_rect = player_surface.get_rect(midbottom = (player_x, player_y))
+player_gravity = 0
 
 
 # ----- GAME LOOP START
@@ -57,14 +58,16 @@ while True:
             _pyg.quit()
             _sys.exit()
 
-        # --- Key Press
+        # --- Jump
         if event.type == _pyg.KEYDOWN:
             if event.key == _pyg.K_SPACE:
-                print('JUMP NOW')
+                player_gravity = -5
 
-        if event.type == _pyg.KEYUP:
-            print('KEY UP')
-
+        if event.type == _pyg.MOUSEBUTTONDOWN and event.button == 1:
+            print('mouse button down')
+            if player_rect.collidepoint(event.pos):
+                player_gravity = -5
+        
 
     # -----INSERT FIXED SURFACES
     screen.blit(sky_surface, sky_pos)
@@ -82,11 +85,10 @@ while True:
     snail_rect.x -= 1
     if snail_rect.right <= 0: snail_rect.left = SCREEN_X
 
+    player_gravity +=0.1
+    player_rect.y += player_gravity
+    
 
-    # # -----CAPTURE KEYS
-    keys = _pyg.key.get_pressed()
-    if keys[_pyg.K_SPACE]:
-        print('still holding space')  
 
     # ----- GAME LOOP END
     _pyg.display.update()
