@@ -43,6 +43,7 @@ score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/5))
 snail_x, snail_y = 600, GROUND_BOTTOM_Y
 player_x, player_y = 80, GROUND_BOTTOM_Y
 snail_rect = snail_surface.get_rect(midbottom = (snail_x, snail_y))
+snail_speed = 2
 player_rect = player_surface.get_rect(midbottom = (player_x, player_y))
 player_gravity = 0
 gravity_increase = 0.1
@@ -83,14 +84,18 @@ while True:
 
 
     # -----MOVING ELEMENTS
-    snail_rect.x -= 1
+    # snail moving
+    snail_rect.x -= snail_speed
     if snail_rect.right <= 0: snail_rect.left = SCREEN_X
-
-    player_gravity += gravity_increase
-    player_rect.y += player_gravity
-    if player_rect.bottom >= GROUND_BOTTOM_Y: player_rect.bottom = GROUND_BOTTOM_Y 
     
-
+    # player gravity effect
+    player_rect.y += player_gravity
+    if player_rect.bottom >= GROUND_BOTTOM_Y: 
+        player_rect.bottom = GROUND_BOTTOM_Y
+        player_gravity = 0
+    else:
+        player_gravity += gravity_increase 
+    
 
     # ----- GAME LOOP END
     _pyg.display.update()
