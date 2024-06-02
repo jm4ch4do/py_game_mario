@@ -1,0 +1,1 @@
+Add double jump after finding that power as an object in the scene

@@ -45,6 +45,7 @@ player_x, player_y = 80, GROUND_BOTTOM_Y
 snail_rect = snail_surface.get_rect(midbottom = (snail_x, snail_y))
 player_rect = player_surface.get_rect(midbottom = (player_x, player_y))
 player_gravity = 0
+gravity_increase = 0.1
 
 
 # ----- GAME LOOP START
@@ -58,15 +59,15 @@ while True:
             _pyg.quit()
             _sys.exit()
 
-        # --- Jump
-        if event.type == _pyg.KEYDOWN:
+        # --- Jump with space
+        if event.type == _pyg.KEYDOWN :
             if event.key == _pyg.K_SPACE:
-                player_gravity = -5
+                if player_rect.bottom >= GROUND_BOTTOM_Y: player_gravity = -6
 
+        # --- Jump with mouse left clic on player
         if event.type == _pyg.MOUSEBUTTONDOWN and event.button == 1:
-            print('mouse button down')
             if player_rect.collidepoint(event.pos):
-                player_gravity = -5
+                if player_rect.bottom >= GROUND_BOTTOM_Y: player_gravity = -6
         
 
     # -----INSERT FIXED SURFACES
@@ -85,8 +86,9 @@ while True:
     snail_rect.x -= 1
     if snail_rect.right <= 0: snail_rect.left = SCREEN_X
 
-    player_gravity +=0.1
+    player_gravity += gravity_increase
     player_rect.y += player_gravity
+    if player_rect.bottom >= GROUND_BOTTOM_Y: player_rect.bottom = GROUND_BOTTOM_Y 
     
 
 
