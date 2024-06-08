@@ -7,3 +7,4 @@ Why use Pygame?
 IDEAS FOR GAMES
 https://www.youtube.com/watch?v=lzHLPaU7UUE
 Hacer juego como "Into the Breach"
+Juego de lanzar pelota de basket ajustando la fuerza
