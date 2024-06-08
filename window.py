@@ -5,6 +5,8 @@ import sys as _sys
 # ----- CONSTANTS
 GROUND_BOTTOM_Y = 300
 SCREEN_X, SCREEN_Y = 800, 400
+SKY_POS = (0, 0)
+GROUND_POS = (0, GROUND_BOTTOM_Y)
 
 
 # ----- INIT, SCREEN
@@ -15,13 +17,12 @@ clock = _pyg.time.Clock()
 _pyg.display.set_caption('RaulitoRun')
 icon = _pyg.image.load('img/icon.png')
 _pyg.display.set_icon(icon)
+test_font = _pyg.font.Font("img/font/Pixeltype.ttf", 50)
 
 
 # ----- STATUS
 game_active = True
-
-# ----- CREATE FONTS
-test_font = _pyg.font.Font("img/font/Pixeltype.ttf", 50)
+score = 0
 
 
 # ----- CREATE SURFACES
@@ -30,7 +31,8 @@ ground_surface = _pyg.image.load('img/ground.png').convert()
 
 text_start_surface = test_font.render("Let's play Raulito Run!", False, (64, 64, 64))
 text_end_surface = test_font.render("Game over! Press Space to retry", False, (64, 64, 64))
-score_surface = test_font.render("Score: 123", False, "#c0e8ec")
+
+score_surface = test_font.render(f"Score: {score}", False, "#404040")
 
 snail_surface = _pyg.image.load('img/snail/snail1.png').convert_alpha()
 player_surface = _pyg.image.load('img/player/player_walk_1.png').convert_alpha()
@@ -38,9 +40,6 @@ player_hit_surface = _pyg.image.load('img/player/player_walk_1_hit.png').convert
 
 
 # ----- POSITIONS FOR FIXED ELEMENTS
-sky_pos = (0, 0)
-ground_pos = (0, GROUND_BOTTOM_Y)
-text_pos = (250, 25)
 text_start_rect = text_start_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/8))
 text_end_rect = text_end_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/8))
 score_rect = score_surface.get_rect(center=(SCREEN_X/2, SCREEN_Y/4))
@@ -51,6 +50,7 @@ snail_x, snail_y = 600, GROUND_BOTTOM_Y
 player_x, player_y = 80, GROUND_BOTTOM_Y
 snail_rect = snail_surface.get_rect(midbottom = (snail_x, snail_y))
 snail_speed = 2
+
 player_rect = player_surface.get_rect(midbottom = (player_x, player_y))
 player_gravity = 0
 gravity_increase = 0.1
@@ -88,8 +88,8 @@ while True:
         
     if game_active:
         # -----INSERT FIXED SURFACES
-        screen.blit(sky_surface, sky_pos)
-        screen.blit(ground_surface, ground_pos)
+        screen.blit(sky_surface, SKY_POS)
+        screen.blit(ground_surface, GROUND_POS)
         screen.blit(text_start_surface, text_start_rect)
         screen.blit(score_surface, score_rect)
 
@@ -115,15 +115,23 @@ while True:
             player_gravity += gravity_increase 
 
         # player hits snail
-        if snail_rect.colliderect(player_rect): 
-            game_active = False
+        if snail_rect.colliderect(player_rect): game_active = False
+
+        # player jumps over snail
+        elif player_rect.centerx == snail_rect.centerx: 
+            score +=1
+            print('-----score= ', score)
+            score_surface = test_font.render(f"Score: {score}", False, "#404040")
+            
 
     elif not game_active:
-        screen.blit(sky_surface, sky_pos)
-        screen.blit(ground_surface, ground_pos)
+        screen.blit(sky_surface, SKY_POS)
+        screen.blit(ground_surface, GROUND_POS)
         screen.blit(snail_surface, snail_rect)
         screen.blit(player_hit_surface, player_rect)
         screen.blit(text_end_surface, text_end_rect)
+        score = 0
+        score_surface = test_font.render(f"Score: {score}", False, "#404040")
         
 
     # ----- GAME LOOP END
