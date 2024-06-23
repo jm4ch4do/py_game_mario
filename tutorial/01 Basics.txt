@@ -4,7 +4,21 @@ Why use Pygame?
 3. Additional features like collission detection, creating text and timers.
 4. Helps at learning coding and servers as starting point for bigger engines.
 
+Level 2 could be Yunior's idea of running from the snail
+
+
 IDEAS FOR GAMES
 https://www.youtube.com/watch?v=lzHLPaU7UUE
 Hacer juego como "Into the Breach"
 Juego de lanzar pelota de basket ajustando la fuerza
+Ship game like: https://www.youtube.com/watch?v=SsWGiUqv6YE
+Many games here: https://github.com/pyGuru123/Python-Games
+
+
+Design Patterns Used
+Observer: When the snail leaves the screen it notifies the EnenmyManager 
+          Class calling a function provided as parameter when the Snail 
+          object was created. 
+Dependency Injection: Classes like Player and Snail receive World and 
+                      Status objects and expect them to have certain 
+                      properties and methods.

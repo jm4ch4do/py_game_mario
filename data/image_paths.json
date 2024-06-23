@@ -1,0 +1,9 @@
+{
+    "player_1": "assets/images/player/player_walk_1.png",
+    "player_hit": "assets/images/player/player_hit.png",
+    "snail_1": "assets/images/enemies/snail_1.png",
+    "snail_2": "assets/images/enemies/snail_2.png",
+    "window_icon": "assets/images/background/icon.png",
+    "sky": "assets/images/background/sky.png",
+    "surface": "assets/images/background/surface.png"
+}

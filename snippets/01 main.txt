@@ -1,0 +1,8 @@
+--- RUN
+myenv\Scripts\activate
+python -m scenes.level_001
+
+--- MAINTENANCE
+isort . --skip myenv 
+black . --exclude myenv
+
