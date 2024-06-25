@@ -1,3 +1,4 @@
+import json as _json
 import math as _math
 
 import pygame as _pyg
@@ -10,6 +11,38 @@ class EnemyManager:
     def __init__(self, world, status, player):
         self.enemies = _pyg.sprite.Group()
         self.world, self.status, self.player = world, status, player
+        self.enemy_map = self.load_enemy_map()
+        self.enemy_index = 0
+        self.enemy_types = {
+            "Snail": Snail,
+        }
+
+    def spawn_from_map(self):
+        if self.enemy_index >= len(self.enemy_map):
+            return None
+
+        next_enemy = self.enemy_map[self.enemy_index]
+        game_time = _pyg.time.get_ticks() - self.status.start_time
+        if game_time > next_enemy["time"]:
+            self.enemy_index += 1
+            self.spawn_enemy(next_enemy["type"], next_enemy["scale"])
+
+    def load_enemy_map(self):
+        source = "data/enemy_map.json"
+        with open(source) as f:
+            enemy_map = _json.load(f)
+        return enemy_map["enemies"]
+
+    def spawn_enemy(self, type, scale=1):
+        EnemyClass = self.enemy_types[type]
+        enemy = EnemyClass(
+            world=self.world,
+            status=self.status,
+            player=self.player,
+            react_to_event=self.react_to_event,
+            scale=scale,
+        )
+        self.enemies.add(enemy)
 
     def spawn_snail(self, scale=1):
         snail = Snail(
@@ -25,11 +58,11 @@ class EnemyManager:
         if event == "leaving":
             new_scale = enemy.scale * enemy.scale_inc
             self.enemies.remove(enemy)
-            self.spawn_snail(new_scale)
         if event == "hits_player":
             self.status.gameover = True
 
     def update(self):
+        self.spawn_from_map()
         self.enemies.update()
 
     def draw(self, screen):

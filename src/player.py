@@ -55,7 +55,6 @@ class Player(_pyg.sprite.Sprite):
                 self.ani_index = 0
             self.image = self.images[f"walk{_math.floor(self.ani_index) + 1}"]
 
-
     def update(self, screen):
         self.handle_input()
         self.apply_gravity()

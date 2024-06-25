@@ -1,0 +1,29 @@
+{
+    "enemies": [
+        {
+            "type": "Snail",
+            "time": 0,
+            "scale": 1
+        },
+        {
+            "type": "Snail",
+            "time": 2000,
+            "scale": 1.5
+        },
+        {
+            "type": "Snail",
+            "time": 4000,
+            "scale": 2
+        },
+        {
+            "type": "Snail",
+            "time": 6000,
+            "scale": 2
+        },
+        {
+            "type": "Snail",
+            "time": 10000,
+            "scale": 2
+        }
+    ]
+}

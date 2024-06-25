@@ -8,6 +8,7 @@ class Status:
     def __init__(self):
         self.gameover = False
         self.score = 0
+        self.start_time = _pyg.time.get_ticks()
 
 
 class Score(_pyg.sprite.Sprite):
