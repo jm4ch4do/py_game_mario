@@ -12,7 +12,6 @@ class World:
         enemy_start_x=600,
         screen_max_x=800,
         screen_max_y=400,
-        background=("sky", "surface"),
     ):
         self.ground = ground
         self.screen_max_x = screen_max_x
@@ -25,7 +24,17 @@ class World:
         self.surface_pos = (0, ground)
 
         self.prepare_window()
-        self.background = self.prepare_background(background)
+
+        self.background_components = (
+            ("sky", (0, 0)),
+            ("sky", (self.screen_max_x, 0)),
+            ("surface", (0, self.ground)),
+            ("surface", (self.screen_max_x, self.ground)),
+        )
+        self.moving_background_components = []
+        self.moving_background_components_name = ("sky", "surface")
+        self.background_speed = 1
+        self.background = self.prepare_background()
 
     def prepare_window(self, title="Raulito Run", icon="window_icon"):
         _pyg.display.set_caption(title=title)
@@ -37,14 +46,24 @@ class World:
         path = _utils.get_asset_path(name, type="font")
         return _pyg.font.Font(path, 50)
 
-    def prepare_background(self, components):
-        backgrounds = [
-            Background(comp, getattr(self, f"{comp}_pos")) for comp in components
-        ]
-        background_group = _pyg.sprite.Group()
-        for background in backgrounds:
-            background_group.add(background)
-        return background_group
+    def prepare_background(self):
+        background = _pyg.sprite.Group()
+        for comp in self.background_components:
+            name, pos = comp
+            background_item = Background(name, pos)
+            background.add(background_item)
+            if name in self.moving_background_components_name:
+                self.moving_background_components.append(background_item)
+        return background
+
+    def move_background(self):
+        for background_component in self.moving_background_components:
+            background_component.rect.x -= self.background_speed
+            if background_component.rect.right < 0:
+                background_component.rect.x = self.screen_max_x
+
+    def update(self):
+        self.move_background()
 
 
 class Background(_pyg.sprite.Sprite):

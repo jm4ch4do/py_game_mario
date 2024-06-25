@@ -1,6 +1,9 @@
 {
-    "player_1": "assets/images/player/player_walk_1.png",
-    "player_hit": "assets/images/player/player_hit.png",
+    "player_walk1": "assets/images/player/walk1.png",
+    "player_walk2": "assets/images/player/walk2.png",
+    "player_jump": "assets/images/player/jump.png",
+    "player_stand": "assets/images/player/stand.png",
+    "player_hit": "assets/images/player/hit.png",
     "snail_1": "assets/images/enemies/snail_1.png",
     "snail_2": "assets/images/enemies/snail_2.png",
     "window_icon": "assets/images/background/icon.png",

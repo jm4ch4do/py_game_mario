@@ -37,14 +37,12 @@ while True:
         if restart_needed:
             status, score, player, enemy_manager = prepare_level_start()
 
-    world.background.draw(screen)
-    score.update(), score.draw(screen)
+    if not status.gameover: world.update(), score.update()
+    world.background.draw(screen), score.draw(screen)
+    
+    if not status.gameover: enemy_manager.update(), player.update(screen)
+    enemy_manager.draw(screen), player.draw(screen)
 
-    if not status.gameover:
-        enemy_manager.update(), player.update()
-
-    enemy_manager.draw(screen)
-    player.draw(screen)
 
     _pyg.display.update()
     clock.tick(60)
