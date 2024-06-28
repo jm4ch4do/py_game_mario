@@ -1,6 +1,6 @@
 import pygame as _pyg
 
-from src import enemies as _ene
+from src import actors as _act
 from src import player as _pla
 from src import status as _st
 from src import utils as _utils
@@ -16,7 +16,7 @@ def prepare_level_start():
 
     player = _pyg.sprite.GroupSingle()
     player.add(_pla.Player(world=world, status=status))
-    enemy_manager = _ene.EnemyManager(world=world, status=status, player=player)
+    enemy_manager = _act.Spawner(world=world, status=status, player=player)
     enemy_manager.spawn_snail()
 
     return status, score, player, enemy_manager

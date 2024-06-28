@@ -7,42 +7,42 @@ import src.utils as _utils
 import src.world as _world
 
 
-class EnemyManager:
+class Spawner:
     def __init__(self, world, status, player):
-        self.enemies = _pyg.sprite.Group()
+        self.actors = _pyg.sprite.Group()
         self.world, self.status, self.player = world, status, player
-        self.enemy_map = self.load_enemy_map()
-        self.enemy_index = 0
-        self.enemy_types = {
+        self.actor_map = self.load_actor_map()
+        self.actor_index = 0
+        self.actor_types = {
             "Snail": Snail,
         }
 
     def spawn_from_map(self):
-        if self.enemy_index >= len(self.enemy_map):
+        if self.actor_index >= len(self.actor_map):
             return None
 
-        next_enemy = self.enemy_map[self.enemy_index]
+        next_actor = self.actor_map[self.actor_index]
         game_time = _pyg.time.get_ticks() - self.status.start_time
-        if game_time > next_enemy["time"]:
-            self.enemy_index += 1
-            self.spawn_enemy(next_enemy["type"], next_enemy["scale"])
+        if game_time > next_actor["time"]:
+            self.actor_index += 1
+            self.spawn_actor(next_actor["type"], next_actor["scale"])
 
-    def load_enemy_map(self):
-        source = "data/enemy_map.json"
+    def load_actor_map(self):
+        source = "data/actor_map.json"
         with open(source) as f:
-            enemy_map = _json.load(f)
-        return enemy_map["enemies"]
+            actor_map = _json.load(f)
+        return actor_map["actors"]
 
-    def spawn_enemy(self, type, scale=1):
-        EnemyClass = self.enemy_types[type]
-        enemy = EnemyClass(
+    def spawn_actor(self, type, scale=1):
+        ActorClass = self.actor_types[type]
+        actor = ActorClass(
             world=self.world,
             status=self.status,
             player=self.player,
             react_to_event=self.react_to_event,
             scale=scale,
         )
-        self.enemies.add(enemy)
+        self.actors.add(actor)
 
     def spawn_snail(self, scale=1):
         snail = Snail(
@@ -52,21 +52,21 @@ class EnemyManager:
             react_to_event=self.react_to_event,
             scale=scale,
         )
-        self.enemies.add(snail)
+        self.actors.add(snail)
 
-    def react_to_event(self, event, enemy):
+    def react_to_event(self, event, actor):
         if event == "leaving":
-            new_scale = enemy.scale * enemy.scale_inc
-            self.enemies.remove(enemy)
+            new_scale = actor.scale * actor.scale_inc
+            self.actors.remove(actor)
         if event == "hits_player":
             self.status.gameover = True
 
     def update(self):
         self.spawn_from_map()
-        self.enemies.update()
+        self.actors.update()
 
     def draw(self, screen):
-        self.enemies.draw(screen)
+        self.actors.draw(screen)
 
 
 class Snail(_pyg.sprite.Sprite):

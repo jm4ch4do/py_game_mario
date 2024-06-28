@@ -1,5 +1,5 @@
 {
-    "enemies": [
+    "actors": [
         {
             "type": "Snail",
             "time": 0,
