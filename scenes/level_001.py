@@ -17,7 +17,6 @@ def prepare_level_start():
     player = _pyg.sprite.GroupSingle()
     player.add(_pla.Player(world=world, status=status))
     enemy_manager = _act.Spawner(world=world, status=status, player=player)
-    enemy_manager.spawn_snail()
 
     return status, score, player, enemy_manager
 
@@ -42,8 +41,10 @@ while True:
     world.background.draw(screen), score.draw(screen)
 
     if not status.gameover:
-        enemy_manager.update(), player.update(screen)
-    enemy_manager.draw(screen), player.draw(screen)
+        enemy_manager.update()
+    enemy_manager.draw(screen)
+
+    player.update(screen), player.draw(screen)
 
     _pyg.display.update()
     clock.tick(60)

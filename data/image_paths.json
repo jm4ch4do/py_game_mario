@@ -4,9 +4,12 @@
     "player_jump": "assets/images/player/jump.png",
     "player_stand": "assets/images/player/stand.png",
     "player_hit": "assets/images/player/hit.png",
+    "player_happy": "assets/images/player/happy.png",
     "snail_1": "assets/images/enemies/snail_1.png",
     "snail_2": "assets/images/enemies/snail_2.png",
     "window_icon": "assets/images/background/icon.png",
     "sky": "assets/images/background/sky.png",
-    "surface": "assets/images/background/surface.png"
+    "surface": "assets/images/background/surface.png",
+    "treasure": "assets/images/objects/treasure.png",
+    "treasure_opened": "assets/images/objects/treasure_opened.png"
 }

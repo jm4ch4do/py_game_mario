@@ -7,6 +7,7 @@ class Status:
 
     def __init__(self):
         self.gameover = False
+        self.victory = False
         self.score = 0
         self.start_time = _pyg.time.get_ticks()
 

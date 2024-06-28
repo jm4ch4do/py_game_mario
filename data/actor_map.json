@@ -24,6 +24,12 @@
             "type": "Snail",
             "time": 10000,
             "scale": 2
+        },
+        {
+            "type": "Treasure",
+            "time": 12000,
+            "scale": 1
         }
+
     ]
 }

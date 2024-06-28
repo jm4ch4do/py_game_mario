@@ -16,6 +16,7 @@ class Player(_pyg.sprite.Sprite):
             "jump": _utils.load_image("player_jump").convert_alpha(),
             "stand": _utils.load_image("player_stand").convert_alpha(),
             "hit": _utils.load_image("player_hit").convert_alpha(),
+            "happy": _utils.load_image("player_happy").convert_alpha(),
         }
         self.jump_force = -6
 
@@ -36,6 +37,10 @@ class Player(_pyg.sprite.Sprite):
             if self.rect.bottom >= self.world.ground:
                 self.gravity = self.jump_force
 
+    def victory_jump(self):
+        if self.rect.bottom >= self.world.ground:
+            self.gravity = self.jump_force / 3
+
     def apply_gravity(self):
         self.rect.y += self.gravity
         if self.rect.bottom >= self.world.ground:
@@ -45,7 +50,10 @@ class Player(_pyg.sprite.Sprite):
             self.gravity += self.gravity_inc
 
     def animate(self):
-        if self.status.gameover:
+        if self.status.victory:
+            self.image = self.images["happy"]
+            self.victory_jump()
+        elif self.status.gameover:
             self.image = self.images["hit"]
         elif self.rect.bottom < self.world.ground:
             self.image = self.images["jump"]

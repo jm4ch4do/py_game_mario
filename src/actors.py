@@ -15,6 +15,7 @@ class Spawner:
         self.actor_index = 0
         self.actor_types = {
             "Snail": Snail,
+            "Treasure": Treasure,
         }
 
     def spawn_from_map(self):
@@ -44,22 +45,15 @@ class Spawner:
         )
         self.actors.add(actor)
 
-    def spawn_snail(self, scale=1):
-        snail = Snail(
-            world=self.world,
-            status=self.status,
-            player=self.player,
-            react_to_event=self.react_to_event,
-            scale=scale,
-        )
-        self.actors.add(snail)
-
     def react_to_event(self, event, actor):
         if event == "leaving":
-            new_scale = actor.scale * actor.scale_inc
             self.actors.remove(actor)
-        if event == "hits_player":
+        elif event == "hits_player":
             self.status.gameover = True
+        elif event == "found":
+            if isinstance(actor, Treasure):
+                self.status.gameover = True
+                self.status.victory = True
 
     def update(self):
         self.spawn_from_map()
@@ -70,7 +64,6 @@ class Spawner:
 
 
 class Snail(_pyg.sprite.Sprite):
-    scale_inc = 1.2
 
     def __init__(self, world, status, player, react_to_event, scale=1):
         super().__init__()
@@ -117,3 +110,42 @@ class Snail(_pyg.sprite.Sprite):
         if self.rect.x < self.player.sprite.rect.x and not self.got_point_yet:
             self.got_point_yet = True
             self.status.score += 1
+
+
+class Treasure(_pyg.sprite.Sprite):
+
+    def __init__(self, world, status, player, react_to_event, scale=1):
+        super().__init__()
+        self.world, self.status, self.player = world, status, player
+        self.react_to_event = react_to_event
+        self.scale = scale
+        self.animations = ["treasure", "treasure_opened"]
+        self.speed = 1
+        self.is_open = False
+        self.image = self.select_image(self.animations[0])
+        self.rect = self.image.get_rect(midbottom=(world.screen_max_x, world.ground))
+
+    def move_forward(self):
+        self.rect.x -= self.speed
+        return True if self.rect.right <= 0 else False
+
+    def animate(self):
+        index = 1 if self.is_open else 0
+        self.image = self.select_image(self.animations[index])
+
+    def select_image(self, ref=0):
+        return _utils.scale_image(ref, self.scale).convert_alpha()
+
+    def update(self):
+        is_out_of_screen = self.move_forward()
+        if is_out_of_screen:
+            self.react_to_event("leaving", self)
+        self.animate()
+        self.report_hitting_player()
+
+    def report_hitting_player(self):
+
+        if _utils.deep_collision(self.rect, self.player.sprite.rect):
+            self.is_open = True
+            self.animate()
+            self.react_to_event("found", self)
