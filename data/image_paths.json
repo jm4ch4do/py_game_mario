@@ -1,6 +1,8 @@
 {
     "player_walk1": "assets/images/player/walk1.png",
     "player_walk2": "assets/images/player/walk2.png",
+    "player_run1": "assets/images/player/run1.png",
+    "player_run2": "assets/images/player/run2.png",
     "player_jump": "assets/images/player/jump.png",
     "player_stand": "assets/images/player/stand.png",
     "player_hit": "assets/images/player/hit.png",
