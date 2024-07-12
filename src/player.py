@@ -5,11 +5,15 @@ import pygame as _pyg
 from src import utils as _utils
 
 
-class Player(_pyg.sprite.Sprite):
+class Actor(_pyg.sprite.Sprite):
+    def __init__(self, world, status, image):
+        super().__init__()
+        self.world, self.status, self.image = world, status, image
+
+
+class Player(Actor):
 
     def __init__(self, world, status):
-        super().__init__()
-        self.world, self.status = world, status
         self.images = {
             "walk1": _utils.load_image("player_walk1").convert_alpha(),
             "walk2": _utils.load_image("player_walk2").convert_alpha(),
@@ -20,10 +24,11 @@ class Player(_pyg.sprite.Sprite):
             "run1": _utils.load_image("player_run1").convert_alpha(),
             "run2": _utils.load_image("player_run2").convert_alpha(),
         }
-        self.jump_force = -6
+        super().__init__(world, status, self.images["walk1"])
 
-        self.image = self.images["walk1"]
         self.rect = self.image.get_rect(midbottom=world.player_start)
+        self.mask = self.create_cropped_mask()
+        self.jump_force = -6
         self.gravity = 0
         self.gravity_inc = 0.1
         self.ani_index = 0
@@ -43,6 +48,14 @@ class Player(_pyg.sprite.Sprite):
         elif keys[_pyg.K_LEFT]:
             self.run_slower()
             self.action = "running_slower"
+
+    def create_cropped_mask(self, crop_index: int = 1):
+        w, h = self.image.get_size()
+        cropped_surface = _pyg.Surface(
+            (w - crop_index * 2, h - crop_index * 2), _pyg.SRCALPHA
+        )
+        cropped_surface.blit(self.image, (-crop_index, -crop_index))
+        return _pyg.mask.from_surface(cropped_surface)
 
     def jump(self):
         if not self.status.gameover:

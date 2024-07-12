@@ -40,7 +40,7 @@ def scale_image(image, scale=1.5):
 def handle_main_events(event, status):
     if event.type == _pyg.QUIT:
         _pyg.quit(), _sys.exit()  # exit
-    if event.type == _pyg.KEYUP:  # restart
+    if event.type == _pyg.KEYDOWN:  # restart
         if event.key == _pyg.K_SPACE:
             if status.gameover:
                 return True

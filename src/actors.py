@@ -78,6 +78,7 @@ class Snail(_pyg.sprite.Sprite):
 
         self.image = self.select_image(self.animations[0])
         self.rect = self.image.get_rect(midbottom=(world.screen_max_x, world.ground))
+        self.mask = _pyg.mask.from_surface(self.image)
 
     def move_forward(self):
         self.rect.x -= self.speed
@@ -103,8 +104,13 @@ class Snail(_pyg.sprite.Sprite):
         self.score_jumped_by_player()
 
     def report_hitting_player(self):
-        if _utils.deep_collision(self.rect, self.player.sprite.rect):
+        if _pyg.sprite.spritecollide(
+            self, self.player, False, _pyg.sprite.collide_mask
+        ):
             self.react_to_event("hits_player", self)
+
+        # if _utils.deep_collision(self.rect, self.player.sprite.rect):
+        #     self.react_to_event("hits_player", self)
 
     def score_jumped_by_player(self):
         if self.rect.x < self.player.sprite.rect.x and not self.got_point_yet:
