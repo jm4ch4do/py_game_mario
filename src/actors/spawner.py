@@ -15,6 +15,7 @@ class Spawner:
         self.actor_types = {
             "Snail": _ene.Snail,
             "Treasure": _tre.Treasure,
+            "Coin": _tre.Coin,
         }
 
     def spawn_from_map(self):
@@ -53,6 +54,9 @@ class Spawner:
             if isinstance(actor, _tre.Treasure):
                 self.status.gameover = True
                 self.status.victory = True
+            else:
+                self.status.score += 1
+                self.actors.remove(actor)
 
     def update(self):
         self.spawn_from_map()

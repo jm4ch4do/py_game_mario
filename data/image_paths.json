@@ -13,5 +13,6 @@
     "sky": "assets/images/background/sky.png",
     "surface": "assets/images/background/surface.png",
     "treasure": "assets/images/objects/treasure.png",
-    "treasure_opened": "assets/images/objects/treasure_opened.png"
+    "treasure_opened": "assets/images/objects/treasure_opened.png",
+    "coin1": "assets/images/objects/coin1.png"
 }

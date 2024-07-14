@@ -1,10 +1,10 @@
 import pygame as _pyg
 
-from src import actors as _act
-from src import player as _pla
-from src import status as _st
-from src import utils as _utils
-from src import world as _world
+import src.actors.player as _pla
+import src.actors.spawner as _spa
+import src.status as _st
+import src.utils as _utils
+import src.world as _world
 
 
 # ----------------------------- HELPERS -----------------------------
@@ -16,7 +16,7 @@ def prepare_level_start():
 
     player = _pyg.sprite.GroupSingle()
     player.add(_pla.Player(world=world, status=status))
-    enemy_manager = _act.Spawner(world=world, status=status, player=player)
+    enemy_manager = _spa.Spawner(world=world, status=status, player=player)
 
     return status, score, player, enemy_manager
 
