@@ -22,11 +22,15 @@ class Spawner:
         if self.actor_index >= len(self.actor_map):
             return None
 
-        next_actor = self.actor_map[self.actor_index]
+        actor = self.actor_map[self.actor_index]
         game_time = _pyg.time.get_ticks() - self.status.start_time
-        if game_time > next_actor["time"]:
+        if game_time > actor["time"]:
             self.actor_index += 1
-            self.spawn_actor(next_actor["type"], next_actor["scale"])
+            self.spawn_actor(
+                actor.get("type"),
+                (actor.get("x_pos"), actor.get("y_pos")),
+                actor.get("scale"),
+            )
 
     def load_actor_map(self):
         source = "data/actor_map.json"
@@ -34,7 +38,7 @@ class Spawner:
             actor_map = _json.load(f)
         return actor_map["actors"]
 
-    def spawn_actor(self, type, scale=1):
+    def spawn_actor(self, type, ini_pos, scale=1):
         ActorClass = self.actor_types[type]
         actor = ActorClass(
             world=self.world,
@@ -42,6 +46,7 @@ class Spawner:
             player=self.player,
             react_to_event=self.react_to_event,
             scale=scale,
+            ini_pos=ini_pos,
         )
         self.actors.add(actor)
 

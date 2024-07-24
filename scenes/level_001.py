@@ -16,9 +16,9 @@ def prepare_level_start():
 
     player = _pyg.sprite.GroupSingle()
     player.add(_pla.Player(world=world, status=status))
-    enemy_manager = _spa.Spawner(world=world, status=status, player=player)
+    spawner = _spa.Spawner(world=world, status=status, player=player)
 
-    return status, score, player, enemy_manager
+    return status, score, player, spawner
 
 
 # ------------------------------ SETUP ------------------------------
@@ -26,7 +26,7 @@ _pyg.init()
 clock = _pyg.time.Clock()
 world = _world.World()
 screen = _pyg.display.set_mode((world.screen_max_x, world.screen_max_y))
-status, score, player, enemy_manager = prepare_level_start()
+status, score, player, spawner = prepare_level_start()
 
 
 # ---------------------------- GAME LOOP ----------------------------
@@ -34,15 +34,15 @@ while True:
     for event in _pyg.event.get():
         restart_needed = _utils.handle_main_events(event, status)
         if restart_needed:
-            status, score, player, enemy_manager = prepare_level_start()
+            status, score, player, spawner = prepare_level_start()
 
     if not status.gameover:
         world.update(), score.update()
     world.background.draw(screen), score.draw(screen)
 
     if not status.gameover:
-        enemy_manager.update()
-    enemy_manager.draw(screen)
+        spawner.update()
+    spawner.draw(screen)
 
     player.update(screen), player.draw(screen)
 

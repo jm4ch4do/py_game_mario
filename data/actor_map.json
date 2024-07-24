@@ -3,6 +3,12 @@
         {
             "type": "Coin",
             "time": 0,
+            "scale": 1,
+            "y_pos": 100
+        },
+        {
+            "type": "Snail",
+            "time": 0,
             "scale": 1
         },
         {

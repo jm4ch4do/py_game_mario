@@ -49,7 +49,12 @@ class NPC(Actor):
         self.scale = scale
         if image is None:
             image = self.select_image(animations[0])
-        super().__init__(world, status, image, ini_pos, ani_speed, mask_crop, lives)
+
+        x = ini_pos[0] if ini_pos[0] else world.screen_max_x
+        y = ini_pos[1] if ini_pos[1] else world.ground
+        self.ini_pos = (x, y)
+
+        super().__init__(world, status, image, self.ini_pos, ani_speed, mask_crop, lives)
 
         self.animations = animations
         self.player, self.speed = player, speed

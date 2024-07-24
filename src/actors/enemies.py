@@ -48,15 +48,15 @@ class Enemy(_act.NPC):
 
 class Snail(Enemy):
 
-    def __init__(self, world, status, player, react_to_event, scale=1):
+    def __init__(self, world, status, player, react_to_event, ini_pos, scale=1):
         super().__init__(
             world=world,
             status=status,
             player=player,
-            ini_pos=(world.screen_max_x, world.ground),
             scale=scale,
             react_to_event=react_to_event,
             animations=["snail_1", "snail_2"],
             speed=2,
             ani_speed=0.05,
+            ini_pos=ini_pos,
         )
