@@ -3,13 +3,11 @@
         {
             "type": "Coin",
             "time": 0,
-            "scale": 1,
             "y_pos": 100
         },
         {
             "type": "Snail",
-            "time": 0,
-            "scale": 1
+            "time": 0
         },
         {
             "type": "Snail",
@@ -33,8 +31,7 @@
         },
         {
             "type": "Treasure",
-            "time": 12000,
-            "scale": 1
+            "time": 12000
         }
 
     ]

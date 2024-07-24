@@ -46,7 +46,7 @@ class NPC(Actor):
         mask_crop=0,
         lives=1,
     ):
-        self.scale = scale
+        self.scale = scale if scale else 1
         if image is None:
             image = self.select_image(animations[0])
 
