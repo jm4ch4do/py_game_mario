@@ -1,38 +1,50 @@
 {
     "actors": [
         {
-            "type": "Coin",
+            "type": "Snail",
             "time": 0,
-            "y_pos": 100
+            "y_pos": 300,
+            "scale": 1.2
         },
         {
             "type": "Snail",
-            "time": 0
+            "time": 3000,
+            "y_pos": 300,
+            "scale": 1.4
         },
         {
-            "type": "Snail",
-            "time": 2000,
+            "type": "Bird",
+            "time": 6000,
+            "y_pos": 300,
+            "scale": 1
+        },
+        {
+            "type": "Coin",
+            "time": 10000,
+            "y_pos": 100,
             "scale": 1.5
         },
         {
-            "type": "Snail",
-            "time": 4000,
-            "scale": 2
+            "type": "Bird",
+            "time": 13000,
+            "y_pos": 100,
+            "scale": 1.6
         },
         {
             "type": "Snail",
-            "time": 6000,
-            "scale": 2
-        },
-        {
-            "type": "Snail",
-            "time": 10000,
-            "scale": 2
+            "time": 16000,
+            "y_pos": 300,
+            "scale": 1.6
         },
         {
             "type": "Treasure",
-            "time": 12000
+            "time": 20000,
+            "y_pos": 300,
+            "scale": 2
         }
 
     ]
 }
+
+
+

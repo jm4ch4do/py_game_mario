@@ -9,6 +9,8 @@
     "player_happy": "assets/images/player/happy.png",
     "snail_1": "assets/images/enemies/snail_1.png",
     "snail_2": "assets/images/enemies/snail_2.png",
+    "bird_1": "assets/images/enemies/birdd_1.png",
+    "bird_2": "assets/images/enemies/birdd_2.png",
     "window_icon": "assets/images/background/icon.png",
     "sky": "assets/images/background/sky.png",
     "surface": "assets/images/background/surface.png",

@@ -45,7 +45,6 @@ class Enemy(_act.NPC):
             self.got_point_yet = True
             self.status.score += 1
 
-
 class Snail(Enemy):
 
     def __init__(self, world, status, player, react_to_event, ini_pos, scale=1):
@@ -56,6 +55,21 @@ class Snail(Enemy):
             scale=scale,
             react_to_event=react_to_event,
             animations=["snail_1", "snail_2"],
+            speed=2,
+            ani_speed=0.05,
+            ini_pos=ini_pos,
+        )
+
+class Bird(Enemy):
+
+    def __init__(self, world, status, player, react_to_event, ini_pos, scale=1):
+        super().__init__(
+            world=world,
+            status=status,
+            player=player,
+            scale=scale,
+            react_to_event=react_to_event,
+            animations=["bird_1", "bird_2"],
             speed=2,
             ani_speed=0.05,
             ini_pos=ini_pos,

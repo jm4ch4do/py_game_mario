@@ -14,6 +14,7 @@ class Spawner:
         self.actor_index = 0
         self.actor_types = {
             "Snail": _ene.Snail,
+            "Bird": _ene.Bird,
             "Treasure": _tre.Treasure,
             "Coin": _tre.Coin,
         }
