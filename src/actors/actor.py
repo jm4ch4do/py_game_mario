@@ -54,7 +54,9 @@ class NPC(Actor):
         y = ini_pos[1] if ini_pos[1] else world.ground
         self.ini_pos = (x, y)
 
-        super().__init__(world, status, image, self.ini_pos, ani_speed, mask_crop, lives)
+        super().__init__(
+            world, status, image, self.ini_pos, ani_speed, mask_crop, lives
+        )
 
         self.animations = animations
         self.player, self.speed = player, speed

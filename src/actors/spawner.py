@@ -10,38 +10,22 @@ class Spawner:
     def __init__(self, world, status, player):
         self.actors = _pyg.sprite.Group()
         self.world, self.status, self.player = world, status, player
-        self.actor_map = self.load_actor_map()
+        self.actor_map = ActorMap.load()
         self.actor_index = 0
-        self.actor_types = {
-            "Snail": _ene.Snail,
-            "Bird": _ene.Bird,
-            "Treasure": _tre.Treasure,
-            "Coin": _tre.Coin,
-        }
 
     def spawn_from_map(self):
         if self.actor_index >= len(self.actor_map):
             return None
 
-        actor = self.actor_map[self.actor_index]
+        act = self.actor_map[self.actor_index]
         game_time = _pyg.time.get_ticks() - self.status.start_time
-        if game_time > actor["time"]:
+        if game_time > act.time:
             self.actor_index += 1
-            self.spawn_actor(
-                actor.get("type"),
-                (actor.get("x_pos"), actor.get("y_pos")),
-                actor.get("scale"),
-            )
-
-    def load_actor_map(self):
-        source = "data/actor_map.json"
-        with open(source) as f:
-            actor_map = _json.load(f)
-        return actor_map["actors"]
+            self.spawn_actor(act.type, (act.x_pos, act.y_pos), act.scale)
 
     def spawn_actor(self, type, ini_pos, scale=1):
-        ActorClass = self.actor_types[type]
-        actor = ActorClass(
+        SelectedActorClass = type
+        actor = SelectedActorClass(
             world=self.world,
             status=self.status,
             player=self.player,
@@ -70,3 +54,39 @@ class Spawner:
 
     def draw(self, screen):
         self.actors.draw(screen)
+
+
+class ActorMap:
+
+    @classmethod
+    def load(cls, source="data/actor_map.json"):
+        with open(source) as f:
+            raw_actor_map = _json.load(f)["actors"]
+
+        return [
+            ActorInfo(
+                r.get("type"),
+                r.get("time"),
+                r.get("x_pos"),
+                r.get("y_pos"),
+                r.get("scale"),
+            )
+            for r in raw_actor_map
+        ]
+
+
+class ActorInfo:
+
+    ACTOR_TYPES = {
+        "Snail": _ene.Snail,
+        "Bird": _ene.Bird,
+        "Treasure": _tre.Treasure,
+        "Coin": _tre.Coin,
+    }
+
+    def __init__(self, type, time, x_pos=None, y_pos=None, scale=1):
+        self.type = self.ACTOR_TYPES[type]
+        self.time = time * 1000
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.scale = scale
