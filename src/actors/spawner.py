@@ -80,6 +80,7 @@ class ActorInfo:
     ACTOR_TYPES = {
         "Snail": _ene.Snail,
         "Bird": _ene.Bird,
+        "Frog": _ene.Frog,
         "Treasure": _tre.Treasure,
         "Coin": _tre.Coin,
     }
